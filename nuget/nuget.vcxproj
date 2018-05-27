@@ -117,6 +117,7 @@
   <ItemDefinitionGroup>
     <PreBuildEvent>
       <Command>xcopy /I /Y "$(MsBuildThisFileDirectory)..\Release\vcpkg.exe" ".\pkg\vcpkg_bin\"
+      xcopy /I /Y "$(MsBuildThisFileDirectory)..\Release\VcpkgBuildTask.*" ".\pkg\build\"
       xcopy /I /Y "$(MsBuildThisFileDirectory)..\deps\vcpkg" ".\pkg\vcpkg_bin\"
       xcopy /I /S /Y "$(MsBuildThisFileDirectory)..\deps\vcpkg\ports" ".\pkg\vcpkg_bin\ports\"
       xcopy /I /S /Y "$(MsBuildThisFileDirectory)..\deps\vcpkg\scripts" ".\pkg\vcpkg_bin\scripts\"
@@ -125,7 +126,7 @@
     <PostBuildEvent>
       <Command>xcopy /I /Y "$(MsBuildThisFileDirectory)Vcpkg.Nuget.props" ".\pkg\build\"
       xcopy /I /Y "$(MsBuildThisFileDirectory)vcpkg.ps1" ".\pkg\tools\"
-      nuget pack -NoDefaultExcludes "$(MsBuildThisFileDirectory)Vcpkg.Nuget.nuspec"</Command>
+      nuget pack -NoDefaultExcludes -NoPackageAnalysis "$(MsBuildThisFileDirectory)Vcpkg.Nuget.nuspec"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

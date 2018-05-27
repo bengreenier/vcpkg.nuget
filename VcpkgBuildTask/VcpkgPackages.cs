@@ -47,7 +47,7 @@ namespace VcpkgBuildTask
                     )
                 ),
                 "vcpkg.exe");
-            TimeoutMs = 10 * 1000;
+            TimeoutMs = 10 * 60 * 1000;
         }
 
         /// <summary>
@@ -56,30 +56,54 @@ namespace VcpkgBuildTask
         /// <returns>status flag</returns>
         public override bool Execute()
         {
+            if (Packages.Length == 0)
+            {
+                LogMessage("No packages to install");
+                return true;
+            }
+
             // start the install process
             var installProc = InstallPackages(Packages);
 
-            // log stdout and stderr
-            Log.LogMessagesFromStream(installProc.StandardOutput,
-                MessageImportance.Low);
-            Log.LogMessagesFromStream(installProc.StandardError,
-                MessageImportance.Normal);
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                using (installProc.StandardOutput)
+                {
+                    while (!installProc.StandardOutput.EndOfStream)
+                    {
+                        LogMessage(installProc.StandardOutput.ReadLine(), dropPrefix: true);
+                    }
+                }
 
+                using (installProc.StandardError)
+                {
+                    while (!installProc.StandardOutput.EndOfStream)
+                    {
+                        LogMessage(installProc.StandardError.ReadLine(), dropPrefix: true);
+                    }
+                }
+            });
+            
             var installDone = installProc.WaitForExit(TimeoutMs);
-
+            
             if (!installDone)
             {
                 installProc.Kill();
-                Log.LogMessage(MessageImportance.High,
-                    "Vcpkg install timed out at " + TimeoutMs);
+                LogError("install timed out at " + TimeoutMs);
                 return false;
             }
             else
             {
-                Log.LogMessage(MessageImportance.Normal,
-                    "Installed " +
-                    string.Join(",", Packages));
-                return true;
+                if (installProc.ExitCode == 0)
+                {
+                    LogMessage("installed " + string.Join(",", Packages));
+                    return true;
+                }
+                else
+                {
+                    LogError("install failed with code " + installProc.ExitCode);
+                    return false;
+                }
             }
         }
 
@@ -90,10 +114,60 @@ namespace VcpkgBuildTask
         /// <returns>install process</returns>
         private Process InstallPackages(string[] pkgs)
         {
-            return Process.Start(VcpkgExe,
-                "install " +
-                string.Join(" ", pkgs) +
-                (string.IsNullOrEmpty(VcpkgRoot) ? "" : "--vcpkg-root " + VcpkgRoot));
+            var args = "install " +
+                    string.Join(" ", pkgs) +
+                    (string.IsNullOrEmpty(VcpkgRoot) ? "" : " --vcpkg-root \"" + VcpkgRoot + "\"");
+
+            LogMessage(VcpkgExe + " " + args, dropPrefix: true);
+
+            return Process.Start(new ProcessStartInfo()
+            {
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                FileName = VcpkgExe,
+                Arguments = args,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true
+            });
+        }
+
+        /// <summary>
+        /// Apparently Log is broken, so we use this
+        /// </summary>
+        /// <param name="message"></param>
+        private void LogMessage(string message, bool dropPrefix = false)
+        {
+            var logName = "Vcpkg";
+            var messagePrefix = logName + ": ";
+
+            if (dropPrefix)
+            {
+                messagePrefix = "";
+            }
+
+            this.BuildEngine.LogMessageEvent(new BuildMessageEventArgs(messagePrefix + message, logName, logName, MessageImportance.High));
+        }
+
+        /// <summary>
+        /// Apparently Log is broken, so we use this
+        /// </summary>
+        /// <param name="message"></param>
+        private void LogError(string error)
+        {
+            var logName = "Vcpkg";
+            var logErr = 0;
+            var messagePrefix = logName + ": ";
+            this.BuildEngine.LogErrorEvent(new BuildErrorEventArgs(
+                logName,
+                "",
+                logName,
+                logErr,
+                logErr,
+                logErr,
+                logErr,
+                messagePrefix + error,
+                logName,
+                logName));
         }
     }
 }
