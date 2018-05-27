@@ -96,7 +96,7 @@ namespace VcpkgBuildTask
             {
                 if (installProc.ExitCode == 0)
                 {
-                    LogMessage("installed " + string.Join(",", Packages));
+                    LogMessage("installed " + string.Join(", ", Packages));
                     return true;
                 }
                 else
