@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VcpkgBuildTask", "VcpkgBuildTask\VcpkgBuildTask.csproj", "{A5E37833-58C3-49F2-9B01-39F6E9418E26}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VcpkgBuildTask", "VcpkgBuildTask.csproj", "{A5E37833-58C3-49F2-9B01-39F6E9418E26}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vcpkg", "deps\vcpkg\toolsrc\vcpkg\vcpkg.vcxproj", "{34671B80-54F9-46F5-8310-AC429C11D4FB}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vcpkglib", "deps\vcpkg\toolsrc\vcpkglib\vcpkglib.vcxproj", "{B98C92B7-2874-4537-9D46-D14E5C237F04}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nuget", "nuget\nuget.vcxproj", "{5C91D4CC-745F-4369-85D2-3EC5FDF21FE8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nuget", "nuget\Nuget.vcxproj", "{5C91D4CC-745F-4369-85D2-3EC5FDF21FE8}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A5E37833-58C3-49F2-9B01-39F6E9418E26} = {A5E37833-58C3-49F2-9B01-39F6E9418E26}
 		{34671B80-54F9-46F5-8310-AC429C11D4FB} = {34671B80-54F9-46F5-8310-AC429C11D4FB}
