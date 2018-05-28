@@ -1,13 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MsbuildThisFileDirectory)..\vcpkg_bin\scripts\buildsystems\msbuild\vcpkg.targets"/>
-  <UsingTask TaskName="VcpkgBuildTask.VcpkgPackages"
+  <UsingTask TaskName="VcpkgBuildTask.InstallTask"
       AssemblyFile="$(MsbuildThisFileDirectory)VcpkgBuildTask.dll"/>
 
   <Target Name="Vcpkg" BeforeTargets="PreBuildEvent">
-    <Message Text="Running Vcpkg" Importance="high" />
-    <VcpkgPackages Packages="@(VcpkgPackage)"
-                   VcpkgRoot="$(MsbuildThisFileDirectory)..\vcpkg_bin"
-                   VcpkgExe="$(MsbuildThisFileDirectory)..\vcpkg_bin\vcpkg.exe"/>
+    <Message Text="Running vcpkg..." Importance="high" Condition="@(VcpkgPackage) != ''"/>
+    <Message Text="Skipping vcpkg. (no packages)" Importance="high" Condition="@(VcpkgPackage) == ''"/>
+    <InstallTask Packages="@(VcpkgPackage)"
+                 Condition="@(VcpkgPackage) != ''"
+                 LogStandardErrorAsError="true"
+                 StandardOutputImportance="high"
+                 StandardErrorImportance="high"
+                 VcpkgRoot="$(MsbuildThisFileDirectory)..\vcpkg_bin"
+                 VcpkgExe="$(MsbuildThisFileDirectory)..\vcpkg_bin\vcpkg.exe"
+                 VcpkgTriplet="$(VcpkgTriplet)" />
   </Target>
 </Project>
