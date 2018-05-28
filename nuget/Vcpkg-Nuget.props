@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MsbuildThisFileDirectory)..\vcpkg_bin\scripts\buildsystems\msbuild\vcpkg.targets"/>
+  <UsingTask TaskName="VcpkgBuildTask.VcpkgPackages"
+      AssemblyFile="$(MsbuildThisFileDirectory)VcpkgBuildTask.dll"/>
+
+  <Target Name="Vcpkg" BeforeTargets="PreBuildEvent">
+    <Message Text="Running Vcpkg" Importance="high" />
+    <VcpkgPackages Packages="@(VcpkgPackage)"
+                   VcpkgRoot="$(MsbuildThisFileDirectory)..\vcpkg_bin"
+                   VcpkgExe="$(MsbuildThisFileDirectory)..\vcpkg_bin\vcpkg.exe"/>
+  </Target>
+</Project>
