@@ -124,18 +124,18 @@
       xcopy /I /S /Y "$(MsBuildThisFileDirectory)..\deps\vcpkg\triplets" ".\pkg\vcpkg_bin\triplets\"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>xcopy /I /Y "$(MsBuildThisFileDirectory)Vcpkg-Nuget.props" ".\pkg\build\"
+      <Command>xcopy /I /Y "$(MsBuildThisFileDirectory)Vcpkg.Nuget.props" ".\pkg\build\"
       xcopy /I /Y "$(MsBuildThisFileDirectory)vcpkg.ps1" ".\pkg\tools\"
-      "$(OutDir)nuget.exe" pack -NoDefaultExcludes -NoPackageAnalysis "$(MsBuildThisFileDirectory)Vcpkg-Nuget.nuspec"
+      "$(OutDir)nuget.exe" pack -NoDefaultExcludes -NoPackageAnalysis "$(MsBuildThisFileDirectory)Vcpkg.Nuget.nuspec"
       del "$(OutDir)nuget.exe"
       xcopy /I /Y "$(MsBuildThisFileDirectory)*.nupkg" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="Vcpkg-Nuget.nuspec">
+    <None Include="Vcpkg.Nuget.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Vcpkg-Nuget.props">
+    <None Include="Vcpkg.Nuget.props">
       <SubType>Designer</SubType>
     </None>
     <None Include="vcpkg.ps1" />
