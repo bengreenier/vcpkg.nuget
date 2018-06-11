@@ -12,8 +12,9 @@ namespace VcpkgBuildTask
         public static readonly char TripletSeparator = '-';
 
         public string Name { get; private set; }
-        public string Architecture { get; private set; }
         public string Platform { get; private set; }
+        public string Architecture { get; private set; }
+        public string Linkage { get; private set; }
         public string Triplet
         {
             get
@@ -25,7 +26,14 @@ namespace VcpkgBuildTask
                 }
                 else
                 {
-                    return Platform + TripletSeparator + Architecture;
+                    var triplet = Platform + TripletSeparator + Architecture;
+
+                    if (!string.IsNullOrEmpty(Linkage))
+                    {
+                        triplet += TripletSeparator + Linkage;
+                    }
+
+                    return triplet;
                 }
             }
         }
@@ -50,13 +58,19 @@ namespace VcpkgBuildTask
         {
             var parts = triplet.Split(TripletSeparator);
 
-            if (parts.Length != 2)
+            if (parts.Length != 2 &&
+                parts.Length != 3)
             {
                 throw new ArgumentException(nameof(triplet));
             }
 
             this.Platform = parts[0];
             this.Architecture = parts[1];
+
+            if (parts.Length == 3)
+            {
+                this.Linkage = parts[2];
+            }
         }
     }
 }
