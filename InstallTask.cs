@@ -6,12 +6,18 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace VcpkgBuildTask
 {
     public class InstallTask : ToolTask
     {
+        /// <summary>
+        /// The name of the internal system semaphore
+        /// </summary>
+        public static readonly string SemaphoreName = "Vcpkg.Nuget.InstallTask.Semaphore";
+
         /// <summary>
         /// The vcpkg root directory path
         /// </summary>
@@ -34,6 +40,10 @@ namespace VcpkgBuildTask
         public string[] Packages { get; set; }
 
         protected override string ToolName => "Vcpkg";
+        
+        private static volatile Semaphore singleTaskCrit;
+
+        private bool hasCrit;
 
         public InstallTask() : base()
         {
@@ -49,6 +59,13 @@ namespace VcpkgBuildTask
                 ),
                 "vcpkg.exe");
             Timeout = 10 * 60 * 1000;
+
+            if (singleTaskCrit == null)
+            {
+                singleTaskCrit = new Semaphore(1, 1, SemaphoreName);
+            }
+
+            hasCrit = false;
         }
 
         protected override string GenerateFullPathToTool()
@@ -103,6 +120,46 @@ namespace VcpkgBuildTask
             }
 
             return builder.ToString();
+        }
+
+        public override bool Execute()
+        {
+            singleTaskCrit.WaitOne();
+            hasCrit = true;
+            try
+            {
+                var result = InternalExecute();
+                return result;
+            }
+            finally
+            {
+                if (hasCrit)
+                {
+                    singleTaskCrit.Release();
+                    hasCrit = false;
+                }
+            }
+        }
+
+        public virtual bool InternalExecute()
+        {
+            return base.Execute();
+        }
+
+        public override void Cancel()
+        {
+            if (hasCrit)
+            {
+                singleTaskCrit.Release();
+                hasCrit = false;
+            }
+
+            InternalCancel();
+        }
+
+        public virtual void InternalCancel()
+        {
+            base.Cancel();
         }
     }
 }

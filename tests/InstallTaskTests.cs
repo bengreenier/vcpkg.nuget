@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Reflection;
+using System.Threading;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -94,6 +95,80 @@ namespace VcpkgBuildTask.Tests
             method.Invoke(instance, null);
 
             moqEngine.Verify(m => m.LogErrorEvent(It.IsAny<BuildErrorEventArgs>()), Times.Once());
+        }
+
+        [TestMethod]
+        public void ParallelExecutionBlocks()
+        {
+            var readyForWork = new EventWaitHandle(false, EventResetMode.ManualReset);
+            var simulateWorking = new EventWaitHandle(false, EventResetMode.ManualReset);
+            
+            var instance = new Mock<InstallTask>() { CallBase = true };
+
+            instance.Setup(i => i.InternalExecute()).Returns(() =>
+            {
+                readyForWork.Set();
+                simulateWorking.WaitOne();
+                return true;
+            });
+
+            var readSemaphore = new Semaphore(1, 1, InstallTask.SemaphoreName);
+
+            var instanceThread = System.Threading.Tasks.Task.Run(() =>
+            {
+                instance.Object.Execute();
+            });
+
+            readyForWork.WaitOne();
+
+            Assert.IsFalse(readSemaphore.WaitOne(1000));
+
+            simulateWorking.Set();
+
+            instanceThread.Wait();
+
+            Assert.IsTrue(readSemaphore.WaitOne(1000));
+            readSemaphore.Release();
+        }
+        
+        [TestMethod]
+        public void ParallelExecutionCancelation()
+        {
+            var readyForWork = new EventWaitHandle(false, EventResetMode.ManualReset);
+            var simulateWorking = new EventWaitHandle(false, EventResetMode.ManualReset);
+
+            var instance = new Mock<InstallTask>() { CallBase = true };
+
+            instance.Setup(i => i.InternalExecute()).Returns(() =>
+            {
+                readyForWork.Set();
+                simulateWorking.WaitOne();
+                return true;
+            });
+
+            instance.Setup(i => i.InternalCancel()).Callback(() =>
+            {
+                // effectively cancel InternalExecute
+                simulateWorking.Set();
+            });
+
+            var readSemaphore = new Semaphore(1, 1, InstallTask.SemaphoreName);
+
+            var instanceThread = System.Threading.Tasks.Task.Run(() =>
+            {
+                instance.Object.Execute();
+            });
+
+            readyForWork.WaitOne();
+
+            Assert.IsFalse(readSemaphore.WaitOne(1000));
+
+            instance.Object.Cancel();
+            
+            instanceThread.Wait();
+
+            Assert.IsTrue(readSemaphore.WaitOne(1000));
+            readSemaphore.Release();
         }
     }
 }
