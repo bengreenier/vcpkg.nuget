@@ -9,7 +9,5 @@ configuration: Release
 build:
   parallel: false
   project: Vcpkg-Nuget.sln
-#after_build:
-#  - msbuild nuget\nuget.vcxproj
 artifacts:
   - path: 'Release\*.nupkg'
