@@ -4,7 +4,9 @@
   <UsingTask TaskName="VcpkgBuildTask.InstallTask"
       AssemblyFile="$(MsbuildThisFileDirectory)VcpkgBuildTask.dll"/>
   
-  <VcpkgTaskTimeout Condition="'$(VcpkgTaskTimeout)' == '' ">600000</VcpkgTaskTimeout>
+  <PropertyGroup>
+    <VcpkgTaskTimeout Condition="'$(VcpkgTaskTimeout)' == '' ">600000</VcpkgTaskTimeout>
+  </PropertyGroup>
 
   <Target Name="Vcpkg" BeforeTargets="PreBuildEvent">
     <Message Text="Running vcpkg..." Importance="high" Condition="@(VcpkgPackage) != ''"/>
