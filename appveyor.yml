@@ -4,12 +4,12 @@ install:
 - git submodule -q update --init
 before_build:
 - nuget restore
-platform: Any CPU
+platform: x86
 configuration: Release
 build:
   parallel: false
   project: Vcpkg-Nuget.sln
-after_build:
-  - msbuild nuget\nuget.vcxproj
+#after_build:
+#  - msbuild nuget\nuget.vcxproj
 artifacts:
-  - path: 'nuget\*.nupkg'
+  - path: 'Release\*.nupkg'
