@@ -4,6 +4,10 @@ install:
 - git submodule -q update --init
 before_build:
 - nuget restore
+platform: Any CPU
+configuration: Release
 build:
   parallel: false
   project: Vcpkg-Nuget.sln
+artifacts:
+  - path: '**\*.nupkg'
