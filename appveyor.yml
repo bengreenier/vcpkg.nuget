@@ -1,5 +1,7 @@
 version: 1.4.{build}
 image: Visual Studio 2017
+install:
+- cmd: git submodule -q update --init
 build:
   parallel: false
   project: Vcpkg-Nuget.sln
