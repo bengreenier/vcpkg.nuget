@@ -1,6 +1,6 @@
 # vcpkg.nuget
 
-[vcpkg](https://github.com/microsoft/vcpkg) wrapped in [nuget](https://nuget.org)-y goodness 📦 
+[vcpkg](https://github.com/microsoft/vcpkg) wrapped in [nuget](https://nuget.org)-y goodness 📦
 
 ![build status](https://b3ngr33ni3r.visualstudio.com/_apis/public/build/definitions/947d98de-244b-4cdb-a49a-4b232d942edc/3/badge)
 
@@ -14,7 +14,7 @@ __Note: This only supports vcpkg running as part of msbuild, and therefore requi
 
 This package relies on `VcpkgPackage` msbuild tasks, that leverage the following format:
 
-```
+```xml
 <VcpkgPackage Include="packageName"/>
 ```
 
@@ -32,9 +32,10 @@ Where `packageName` refers to the [vcpkg port](https://github.com/Microsoft/vcpk
 * Install the [nuget package](https://www.nuget.org/packages/Vcpkg.Nuget/)
 * Import our build configuration in your project file:
 
-```
+```xml
 <Import Project="packages\Vcpkg.Nuget.1.0.0-beta\build\Vcpkg.Nuget.props" Condition="Exists('packages\Vcpkg.Nuget.1.0.0-beta\build\Vcpkg.Nuget.props')" />
 ```
+
 * Find the relevant ports you wish to install [here](https://github.com/Microsoft/vcpkg/tree/master/ports)
 * Add `VcpkgPackage` elements to your project file
 * Building will ensure ports are built and installed
