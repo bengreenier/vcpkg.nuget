@@ -20,6 +20,15 @@ This package relies on `VcpkgPackage` msbuild tasks, that leverage the following
 
 Where `packageName` refers to the [vcpkg port](https://github.com/Microsoft/vcpkg/tree/master/ports) you wish to install.
 
+By default the task invoking vcpkg has a generous default timeout of ten minutes. If your package builds run longer than that, override the `VcpkgTaskTimeout` property with a higher value:
+
+```xml
+  <PropertyGroup>
+    <!-- task may run for up to twenty minutes -->
+    <VcpkgTaskTimeout>1200000</VcpkgTaskTimeout>
+  </PropertyGroup>
+```
+
 ### Using Visual Studio
 
 * Install the [nuget package](https://www.nuget.org/packages/Vcpkg.Nuget/)
