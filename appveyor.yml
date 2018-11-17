@@ -1,0 +1,13 @@
+version: 1.5.{build}
+image: Visual Studio 2017
+install:
+- git submodule -q update --init
+before_build:
+- nuget restore
+platform: x86
+configuration: Release
+build:
+  parallel: false
+  project: Vcpkg-Nuget.sln
+artifacts:
+  - path: 'Release\*.nupkg'
