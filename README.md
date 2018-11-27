@@ -41,6 +41,19 @@ Where `packageName` refers to the [vcpkg port](https://github.com/Microsoft/vcpk
 * Add `VcpkgPackage` elements to your project file
 * Building will ensure ports are built and installed
 
+### Overriding Triplets
+
+> Note: This approach is documented [in the vcpkg docs](https://github.com/Microsoft/vcpkg/blob/master/docs/users/integration.md#with-msbuild) as well. We're duplicating that info here as it's common scenario for folks consuming this library.
+
+To override the automatically chosen [triplet](https://github.com/Microsoft/vcpkg/blob/master/docs/users/triplets.md), you can specify the MSBuild property `VcpkgTriplet` in your `.vcxproj`. We recommend adding this to the `Globals` PropertyGroup.
+```xml
+<PropertyGroup Label="Globals">
+  <!-- .... -->
+  <VcpkgTriplet Condition="'$(Platform)'=='Win32'">x86-windows-static</VcpkgTriplet>
+  <VcpkgTriplet Condition="'$(Platform)'=='x64'">x64-windows-static</VcpkgTriplet>
+</PropertyGroup>
+```
+
 ## Contributing
 
 CI Builds and Release managements takes place in [a private VSTS instance](https://b3ngr33ni3r.visualstudio.com/vcpkg.nuget). If you feel you need access (if you're a core contributor) please [open an issue](https://github.com/bengreenier/vcpkg.nuget/issues/new) against [@bengreenier](https://github.com/bengreenier).
