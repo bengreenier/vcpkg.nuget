@@ -12,6 +12,8 @@ __Note: This only supports vcpkg running as part of msbuild, and therefore requi
 
 ## How to use
 
+> See [vcpkg.nuget-example](https://github.com/bengreenier/vcpkg.nuget-example) for an example! :sparkles:
+
 This package relies on `VcpkgPackage` msbuild tasks, that leverage the following format:
 
 ```
