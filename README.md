@@ -41,10 +41,6 @@ Where `packageName` refers to the [vcpkg port](https://github.com/Microsoft/vcpk
 * Add `VcpkgPackage` elements to your project file
 * Building will ensure ports are built and installed
 
-## Walkthrough
-
-> Coming soon. Upvote [this issue](https://github.com/bengreenier/vcpkg.nuget/issues/3) if you'd like to see it sooner.
-
 ## Contributing
 
 CI Builds and Release managements takes place in [a private VSTS instance](https://b3ngr33ni3r.visualstudio.com/vcpkg.nuget). If you feel you need access (if you're a core contributor) please [open an issue](https://github.com/bengreenier/vcpkg.nuget/issues/new) against [@bengreenier](https://github.com/bengreenier).
