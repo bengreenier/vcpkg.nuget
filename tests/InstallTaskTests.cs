@@ -17,7 +17,6 @@ namespace VcpkgBuildTask.Tests
         {
             var instance = new InstallTask();
 
-            Assert.AreEqual(10 * 60 * 1000, instance.Timeout);
             Assert.IsNotNull(instance.VcpkgExe);
         }
 

@@ -58,7 +58,6 @@ namespace VcpkgBuildTask
                     )
                 ),
                 "vcpkg.exe");
-            Timeout = 10 * 60 * 1000;
 
             if (singleTaskCrit == null)
             {
