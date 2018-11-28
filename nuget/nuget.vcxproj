@@ -121,12 +121,12 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
     <PreBuildEvent>
-      <Command>xcopy /I /Y "$(MsBuildThisFileDirectory)..\Release\vcpkg.exe" ".\pkg\vcpkg_bin\"
-      xcopy /I /Y "$(MsBuildThisFileDirectory)..\Release\VcpkgBuildTask.*" ".\pkg\build\"
-      xcopy /I /Y "$(MsBuildThisFileDirectory)..\deps\vcpkg" ".\pkg\vcpkg_bin\"
-      xcopy /I /S /Y "$(MsBuildThisFileDirectory)..\deps\vcpkg\ports" ".\pkg\vcpkg_bin\ports\"
-      xcopy /I /S /Y "$(MsBuildThisFileDirectory)..\deps\vcpkg\scripts" ".\pkg\vcpkg_bin\scripts\"
-      xcopy /I /S /Y "$(MsBuildThisFileDirectory)..\deps\vcpkg\triplets" ".\pkg\vcpkg_bin\triplets\"</Command>
+      <Command>xcopy /I /Y "$(MsBuildThisFileDirectory)..\msbuild.$(PlatformTarget).$(Configuration.ToLower())\vcpkg.exe" ".\pkg\vcpkg_bin\"
+        xcopy /I /Y "$(MsBuildThisFileDirectory)..\msbuild.$(PlatformTarget).$(Configuration.ToLower())\VcpkgBuildTask.*" ".\pkg\build\"
+        xcopy /I /Y "$(MsBuildThisFileDirectory)..\deps\vcpkg" ".\pkg\vcpkg_bin\"
+        xcopy /I /S /Y "$(MsBuildThisFileDirectory)..\deps\vcpkg\ports" ".\pkg\vcpkg_bin\ports\"
+        xcopy /I /S /Y "$(MsBuildThisFileDirectory)..\deps\vcpkg\scripts" ".\pkg\vcpkg_bin\scripts\"
+        xcopy /I /S /Y "$(MsBuildThisFileDirectory)..\deps\vcpkg\triplets" ".\pkg\vcpkg_bin\triplets\"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>xcopy /I /Y "$(MsBuildThisFileDirectory)Vcpkg.Nuget.props" ".\pkg\build\"

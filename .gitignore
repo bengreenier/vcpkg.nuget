@@ -21,6 +21,10 @@
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
+msbuild.x86.debug/
+msbuild.x86.release/
+msbuild.x64.debug/
+msbuild.x64.release/
 x64/
 x86/
 bld/
