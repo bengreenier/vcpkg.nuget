@@ -16,5 +16,9 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.108
+    - name: Restore with dotnet
+      run: dotnet restore tests/VcpkgBuildTask.Tests.csproj
     - name: Build with dotnet
       run: dotnet build --configuration Release Vcpkg-Nuget.sln
+    - name: Test with dotnet
+      run: dotnet test tests/VcpkgBuildTask.Tests.csproj
