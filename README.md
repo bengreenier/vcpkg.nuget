@@ -1,5 +1,7 @@
 # vcpkg.nuget
 
+> 🚨🚨 THIS PROJECT IS NOT MAINTAINED ANYMORE, DO NOT USE IT 🚨🚨
+
 [vcpkg](https://github.com/microsoft/vcpkg) wrapped in [nuget](https://nuget.org)-y goodness 📦
 
 ![build status](https://b3ngr33ni3r.visualstudio.com/_apis/public/build/definitions/947d98de-244b-4cdb-a49a-4b232d942edc/3/badge)
