@@ -9,18 +9,23 @@ jobs:
   build:
 
     runs-on: windows-latest
-
+    strategy:
+      matrix:
+        platform: [x86, x64]
+        reltype: [Debug, Release]
+        include:
+          - platform: x86
+            runtime: win-x86
+          - platform: x64
+            runtime: win-x64
+      fail-fast: true
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.108
-    - name: Restore (tests) with dotnet
-      run: dotnet restore
-      working-directory: tests
     - name: Build with dotnet
-      run: dotnet build --configuration Release Vcpkg-Nuget.sln
+      run: dotnet build --runtime {{ matrix.runtime }} --configuration {{ matrix.reltype }} -p:Platform={{ matrix.platform }} Vcpkg-Nuget.sln
     - name: Test (tests) with dotnet
-      run: dotnet test
-      working-directory: tests
+      run: dotnet test --runtime {{ matrix.runtime }} --configuration {{ matrix.reltype }} -p:Platform={{ matrix.platform }} Vcpkg-Nuget.sln
