@@ -1,0 +1,55 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <!-- The identifier that must be unique within the hosting gallery -->
+    <id>Vcpkg.Nuget</id>
+
+    <!-- The package version number that is used when resolving dependencies -->
+    <version>1.5.0</version>
+
+    <!-- Authors contain text that appears directly on the gallery -->
+    <authors>Ben Greenier</authors>
+
+    <!-- 
+            Owners are typically nuget.org identities that allow gallery
+            users to easily find other packages by the same owners.  
+        -->
+    <owners>bengreenier</owners>
+
+    <!-- License and project URLs provide links for the gallery -->
+    <licenseUrl>https://github.com/bengreenier/vcpkg.nuget</licenseUrl>
+    <projectUrl>https://github.com/bengreenier/vcpkg.nuget</projectUrl>
+
+    <!-- The icon is used in Visual Studio's package manager UI -->
+    <iconUrl>https://github.com/bengreenier/vcpkg.nuget/blob/master/.github/icon.png</iconUrl>
+
+    <!-- 
+            If true, this value prompts the user to accept the license when
+            installing the package. 
+        -->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+
+    <!-- Any details about this particular release -->
+    <releaseNotes>Information about this release can be found at https://github.com/bengreenier/vcpkg.nuget/releases/tag/v1.5.0</releaseNotes>
+
+    <!-- 
+            The description can be used in package manager UI. Note that the
+            nuget.org gallery uses information you add in the portal. 
+        -->
+    <description>vcpkg wrapped in nuget-y goodness</description>
+
+    <!-- Tags appear in the gallery and can be used for tag searches -->
+    <tags>c++ vcpkg dependency</tags>
+
+    <!-- Dependencies are automatically installed when the package is installed -->
+    <dependencies>
+    </dependencies>
+  </metadata>
+
+  <!-- A readme.txt to display when the package is installed -->
+  <files>
+    <file src="pkg\build\**" target="build" />
+    <file src="pkg\tools\**" target="tools" />
+    <file src="pkg\vcpkg_bin\**" target="vcpkg_bin" />
+  </files>
+</package>
