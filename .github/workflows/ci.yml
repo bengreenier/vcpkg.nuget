@@ -26,6 +26,6 @@ jobs:
       with:
         dotnet-version: 2.2.108
     - name: Build with dotnet
-      run: dotnet build --runtime {{ matrix.runtime }} --configuration {{ matrix.reltype }} -p:Platform={{ matrix.platform }} Vcpkg-Nuget.sln
+      run: dotnet build --runtime ${{ matrix.runtime }} --configuration ${{ matrix.reltype }} -p:Platform=${{ matrix.platform }} Vcpkg-Nuget.sln
     - name: Test (tests) with dotnet
-      run: dotnet test --runtime {{ matrix.runtime }} --configuration {{ matrix.reltype }} -p:Platform={{ matrix.platform }} Vcpkg-Nuget.sln
+      run: dotnet test --runtime ${{ matrix.runtime }} --configuration ${{ matrix.reltype }} -p:Platform=${{ matrix.platform }} Vcpkg-Nuget.sln
